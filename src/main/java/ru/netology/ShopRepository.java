@@ -7,6 +7,7 @@ public class ShopRepository {
 
     /**
      * Вспомогательный метод для имитации добавления элемента в массив
+     *
      * @param current — массив, в который мы хотим добавить элемент
      * @param product — элемент, который мы хотим добавить
      * @return — возвращает новый массив, который выглядит, как тот, что мы передали,
@@ -17,6 +18,9 @@ public class ShopRepository {
         Product[] tmp = new Product[current.length + 1];
         for (int i = 0; i < current.length; i++) {
             tmp[i] = current[i];
+            if (current[i].getId() == product.getId()) {
+                throw new AlreadyExistsException(product.getId());
+            }
         }
         tmp[tmp.length - 1] = product;
         return tmp;
@@ -24,6 +28,7 @@ public class ShopRepository {
 
     /**
      * Метод добавления товара в репозиторий.
+     *
      * @param product — добавляемый товар.
      * В методе добавления нового товара в репозиторий должна осуществляться проверка на то,
      * что в нём уже нет товара, у которого бы совпадал ID с ID добавляемого товара.
@@ -31,12 +36,7 @@ public class ShopRepository {
      */
 
     public void add(Product product) {
-        for (Product p : products) {
-            if (p.getId() == product.getId()) {
-                throw new AlreadyExistsException(product.getId());
-            }
-            products = addToArray(products, product);
-        }
+        products = addToArray(products, product);
     }
 
     public Product[] findAll() {
